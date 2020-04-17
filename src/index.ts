@@ -22,10 +22,14 @@ const logger = (store: any) => (next: any) => (action: { type: string }) => {
   console.group(action.type);
   console.info('dispatching', action);
   if (currentConnection) {
-    currentConnection.send('newAction', action);
+    currentConnection.send('oldState', store.getState());
+    currentConnection.send('actionDispatched', action);
   }
   let result = next(action);
   console.log('next state', store.getState());
+  if (currentConnection) {
+    currentConnection.send('newState', store.getState());
+  }
   console.groupEnd();
   return result;
 };
