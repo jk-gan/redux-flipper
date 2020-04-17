@@ -1,11 +1,13 @@
 import { addPlugin } from 'react-native-flipper';
 
-const registerPlugin = () => () => {
+const registerPlugin = () => {
   addPlugin({
     getId() {
-      return 'FlipperPluginReduxDevTools';
+      return 'flipper-plugin-redux-devtools';
     },
-    onConnect(connection) {},
+    onConnect(connection) {
+      console.log('connected to flipper-plugin-redux-devtools');
+    },
     onDisconnect() {},
     runInBackground() {
       return true;
