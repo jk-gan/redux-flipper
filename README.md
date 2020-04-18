@@ -1,5 +1,5 @@
 # Redux Flipper
-Redux middleware for [Flipper](https://fbflipper.com/). It can log redux actions and show inside Flipper. 
+Redux middleware for [Flipper](https://fbflipper.com/). It can log redux actions and show inside Flipper using [flipper-plugin-redux-viewer](https://github.com/jk-gan/flipper-plugin-redux-viewer). 
 
 ### Support
 - React Native >= 0.62.0
