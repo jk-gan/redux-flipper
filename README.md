@@ -1,5 +1,7 @@
 # Redux Flipper
 
+![screenshot of the plugin](/images/screenshot.png)
+
 Redux middleware for [Flipper](https://fbflipper.com/). It can log redux actions and show inside Flipper using [flipper-plugin-redux-debugger](https://github.com/jk-gan/flipper-plugin-redux-debugger).
 
 ### Support
