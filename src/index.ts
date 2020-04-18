@@ -1,12 +1,15 @@
 import { addPlugin } from 'react-native-flipper';
 
+let currentConnection: any = null;
+
 const registerPlugin = () => {
   addPlugin({
     getId() {
-      return 'flipper-plugin-redux-devtools';
+      return 'flipper-plugin-redux-viewer';
     },
     onConnect(connection) {
-      console.log('connected to flipper-plugin-redux-devtools');
+      console.log('connected to flipper-plugin-redux-viewer');
+      currentConnection = connection;
     },
     onDisconnect() {},
     runInBackground() {
@@ -16,11 +19,19 @@ const registerPlugin = () => {
 };
 
 const logger = (store: any) => (next: any) => (action: { type: string }) => {
-  console.group(action.type);
-  console.info('dispatching', action);
+  let before = store.getState();
   let result = next(action);
-  console.log('next state', store.getState());
-  console.groupEnd();
+  if (currentConnection) {
+    let after = store.getState();
+    let state = {
+      id: Date.now(),
+      action,
+      before,
+      after,
+    };
+    currentConnection.send('actionDispatched', state);
+  }
+
   return result;
 };
 
