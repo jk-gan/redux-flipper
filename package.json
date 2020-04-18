@@ -18,6 +18,9 @@
     "url": "https://github.com/jk-gan/redux-flipper",
     "type": "git"
   },
+  "files": [
+    "lib/**/*"
+  ],
   "license": "MIT",
   "scripts": {
     "build": "tsc"
