@@ -6,7 +6,7 @@ Redux middleware for [Flipper](https://fbflipper.com/). It can log redux actions
 - Redux or Redux-Toolkit
 
 ## Get Started
-1. Install [redux-flipper](https://github.com/jk-gan/redux-flipper) middleware in your React Native app:
+1. Install [redux-flipper](https://github.com/jk-gan/redux-flipper) middleware and `react-native-flipper` in your React Native app:
 ```bash
 yarn add redux-flipper react-native-flipper
 # for iOS
