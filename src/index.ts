@@ -19,18 +19,19 @@ const registerPlugin = () => {
 };
 
 const logger = (store: any) => (next: any) => (action: { type: string }) => {
-  console.group(action.type);
-  console.info('dispatching', action);
-  if (currentConnection) {
-    currentConnection.send('oldState', store.getState());
-    currentConnection.send('actionDispatched', action);
-  }
+  let before = store.getState();
   let result = next(action);
-  console.log('next state', store.getState());
   if (currentConnection) {
-    currentConnection.send('newState', store.getState());
+    let after = store.getState();
+    let state = {
+      id: Date.now(),
+      action,
+      before,
+      after,
+    };
+    currentConnection.send('actionDispatched', state);
   }
-  console.groupEnd();
+
   return result;
 };
 
