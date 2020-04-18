@@ -5,6 +5,13 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "Gan Jun Kai <kuhn96@gmail.com> (https://github.com/jk-gan)",
+  "contributors": [
+    {
+      "name": "Wai Pai Lee",
+      "email": "pailee.wai@gmail.com",
+      "url": "https://plwai.com/"
+    }
+  ],
   "homepage": "https://github.com/jk-gan/redux-flipper",
   "bugs": "https://github.com/jk-gan/redux-flipper/issues",
   "repository": {
