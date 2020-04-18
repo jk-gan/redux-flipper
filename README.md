@@ -16,9 +16,9 @@ cd ios && pod install
 2. Add the middleware into your redux store:
 ```javascript
 import { createStore, applyMiddleware } from 'redux';
-import { logger } from 'redux-flipper';
+import { viewer } from 'redux-flipper';
 
-let store = createStore(RootReducer, {}, applyMiddleware(logger));
+let store = createStore(RootReducer, {}, applyMiddleware(viewer));
 ```
 
 3. Register plugin in your app:

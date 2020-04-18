@@ -1,4 +1,5 @@
 import { addPlugin } from 'react-native-flipper';
+import * as dayjs from 'dayjs';
 
 let currentConnection: any = null;
 
@@ -7,8 +8,7 @@ const registerPlugin = () => {
     getId() {
       return 'flipper-plugin-redux-viewer';
     },
-    onConnect(connection) {
-      console.log('connected to flipper-plugin-redux-viewer');
+    onConnect(connection: any) {
       currentConnection = connection;
     },
     onDisconnect() {},
@@ -18,13 +18,15 @@ const registerPlugin = () => {
   });
 };
 
-const logger = (store: any) => (next: any) => (action: { type: string }) => {
+const viewer = (store: any) => (next: any) => (action: { type: string }) => {
   let before = store.getState();
   let result = next(action);
   if (currentConnection) {
     let after = store.getState();
+    let now = Date.now();
     let state = {
-      id: Date.now(),
+      id: now,
+      time: dayjs(now).format('HH:mm:ss.SSS'),
       action,
       before,
       after,
@@ -35,4 +37,4 @@ const logger = (store: any) => (next: any) => (action: { type: string }) => {
   return result;
 };
 
-export { logger, registerPlugin };
+export { viewer, registerPlugin };
