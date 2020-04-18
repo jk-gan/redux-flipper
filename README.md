@@ -23,7 +23,7 @@ cd ios && pod install
 import { createStore, applyMiddleware } from 'redux';
 
 if (__DEV__) {
-  const { createDebugger } = require('redux-flipper').default;
+  const createDebugger = require('redux-flipper').default;
 
   let reduxDebugger = createDebugger();
   let store = createStore(RootReducer, {}, applyMiddleware(reduxDebugger));
