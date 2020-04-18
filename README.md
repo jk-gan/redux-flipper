@@ -34,6 +34,10 @@ if (__DEV__) {
 }
 ```
 
-3. Install [flipper-plugin-redux-debugger](https://github.com/jk-gan/flipper-plugin-redux-debugger) in Flipper desktop client
+3. Install [flipper-plugin-redux-debugger](https://github.com/jk-gan/flipper-plugin-redux-debugger) in Flipper desktop client:
+
+```
+Manage Plugins > Install Plugins > search "redux-debugger" > Install
+```
 
 4. Start your app, then you should be able to see Redux Debugger on your Flipper app
