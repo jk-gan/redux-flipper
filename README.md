@@ -6,7 +6,9 @@ Redux middleware for [Flipper](https://fbflipper.com/). It can log redux actions
 
 ### Support
 
-- React Native >= 0.62.0
+- React Native
+    - For `react-native` >= 0.62, flippler support is enabled by default
+    - For `react-native` < 0.62, follow [these steps](https://fbflipper.com/docs/getting-started/react-native.html#manual-setup) to setup your app
 - Redux or Redux-Toolkit
 
 ## Get Started
