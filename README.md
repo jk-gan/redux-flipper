@@ -1,14 +1,14 @@
 # Redux Flipper
 
-![screenshot of the plugin](/images/screenshot.png)
+![screenshot of the plugin](https://imgur.com/QUDYozo.png)
 
 Redux middleware for [Flipper](https://fbflipper.com/). It can log redux actions and show inside Flipper using [flipper-plugin-redux-debugger](https://github.com/jk-gan/flipper-plugin-redux-debugger).
 
 ### Support
 
 - React Native
-    - For `react-native` >= 0.62, flippler support is enabled by default
-    - For `react-native` < 0.62, follow [these steps](https://fbflipper.com/docs/getting-started/react-native.html#manual-setup) to setup your app
+  - For `react-native` >= 0.62, flippler support is enabled by default
+  - For `react-native` < 0.62, follow [these steps](https://fbflipper.com/docs/getting-started/react-native.html#manual-setup) to setup your app
 - Redux or Redux-Toolkit
 
 ## Get Started
