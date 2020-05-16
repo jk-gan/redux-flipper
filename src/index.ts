@@ -6,42 +6,43 @@ const error = {
   NO_STORE: 'NO_STORE',
 };
 
-const createDebugger = () => {
-  return (store: any) => (next: any) => (action: { type: string }) => {
-    if (currentConnection == null) {
-      addPlugin({
-        getId() {
-          return 'flipper-plugin-redux-debugger';
-        },
-        onConnect(connection: any) {
-          currentConnection = connection;
+const createDebugger = () => (store: any) => {
+  if (currentConnection == null) {
+    addPlugin({
+      getId() {
+        return 'flipper-plugin-redux-debugger';
+      },
+      onConnect(connection: any) {
+        currentConnection = connection;
 
-          currentConnection.receive(
-            'dispatchAction',
-            (data: any, responder: any) => {
-              console.log('flipper redux dispatch action data', data);
-              // respond with some data
-              if (store) {
-                store.dispatch({ type: data.type, ...data.payload });
+        currentConnection.receive(
+          'dispatchAction',
+          (data: any, responder: any) => {
+            console.log('flipper redux dispatch action data', data);
+            // respond with some data
+            if (store) {
+              store.dispatch({ type: data.type, ...data.payload });
 
-                responder.success({
-                  ack: true,
-                });
-              } else {
-                responder.success({
-                  error: error.NO_STORE,
-                  message: 'store is not setup in flipper plugin',
-                });
-              }
-            },
-          );
-        },
-        onDisconnect() {},
-        runInBackground() {
-          return true;
-        },
-      });
-    }
+              responder.success({
+                ack: true,
+              });
+            } else {
+              responder.success({
+                error: error.NO_STORE,
+                message: 'store is not setup in flipper plugin',
+              });
+            }
+          },
+        );
+      },
+      onDisconnect() {},
+      runInBackground() {
+        return true;
+      },
+    });
+  }
+
+  return (next: any) => (action: { type: string }) => {
     let startTime = Date.now();
     let before = store.getState();
     let result = next(action);
