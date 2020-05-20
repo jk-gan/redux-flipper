@@ -26,14 +26,14 @@ cd ios && pod install
 ```javascript
 import { createStore, applyMiddleware } from 'redux';
 
+const middlewares = [/* other middlewares */];
+
 if (__DEV__) {
   const createDebugger = require('redux-flipper').default;
-
-  let reduxDebugger = createDebugger();
-  let store = createStore(RootReducer, {}, applyMiddleware(reduxDebugger));
-} else {
-  let store = createStore(RootReducer, {});
+  middlewares.push(createDebugger());
 }
+
+const store = createStore(RootReducer, applyMiddleware(...middlewares));
 ```
 
 3. Install [flipper-plugin-redux-debugger](https://github.com/jk-gan/flipper-plugin-redux-debugger) in Flipper desktop client:
