@@ -1,8 +1,6 @@
 import { addPlugin } from 'react-native-flipper';
 import * as dayjs from 'dayjs';
 
-const cycle = require('cycle');
-
 type Configuration = {
   resolveCyclic: boolean;
 };
@@ -61,6 +59,8 @@ const createDebugger = ({ resolveCyclic }: Configuration = defaultConfig) => (
       let now = Date.now();
 
       if (resolveCyclic) {
+        const cycle = require('cycle');
+
         before = cycle.decycle(before);
         after = cycle.decycle(after);
       }

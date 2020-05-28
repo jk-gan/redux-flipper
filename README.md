@@ -52,6 +52,8 @@ Redux Debugger does not support cyclic reference objects by default as resolving
 
 This is just a temporary solution if debugging is urgent. It is advisable to restructure your redux state structure.
 
+For more information about cyclic reference, visit [MDN Cyclic Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value).
+
 ```javascript
 let reduxDebugger = createDebugger({ resolveCyclic: true });
 ```
