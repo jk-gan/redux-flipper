@@ -1,12 +1,20 @@
 import { addPlugin } from 'react-native-flipper';
 import * as dayjs from 'dayjs';
 
+type Configuration = {
+  resolveCyclic: boolean;
+};
+
+const defaultConfig: Configuration = { resolveCyclic: false };
+
 let currentConnection: any = null;
 const error = {
   NO_STORE: 'NO_STORE',
 };
 
-const createDebugger = () => (store: any) => {
+const createDebugger = ({ resolveCyclic }: Configuration = defaultConfig) => (
+  store: any,
+) => {
   if (currentConnection == null) {
     addPlugin({
       getId() {
@@ -49,6 +57,13 @@ const createDebugger = () => (store: any) => {
     if (currentConnection) {
       let after = store.getState();
       let now = Date.now();
+
+      if (resolveCyclic) {
+        const cycle = require('cycle');
+
+        before = cycle.decycle(before);
+        after = cycle.decycle(after);
+      }
 
       let state = {
         id: startTime,

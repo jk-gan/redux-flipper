@@ -43,3 +43,17 @@ Manage Plugins > Install Plugins > search "redux-debugger" > Install
 ```
 
 4. Start your app, then you should be able to see Redux Debugger on your Flipper app
+
+## Optional Configuration
+
+### Resolve cyclic reference
+
+Redux Debugger does not support cyclic reference objects by default as resolving it makes application slow. This feature can be enabled by passing `{ resolveCyclic: true }` into `createDebugger`.
+
+This is just a temporary solution if debugging is urgent. It is advisable to restructure your redux state structure.
+
+For more information about cyclic reference, visit [MDN Cyclic Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value).
+
+```javascript
+let reduxDebugger = createDebugger({ resolveCyclic: true });
+```
