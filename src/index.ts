@@ -73,7 +73,15 @@ const createDebugger = ({ resolveCyclic }: Configuration = defaultConfig) => (
         before,
         after,
       };
-      currentConnection.send('actionDispatched', state);
+
+      try {
+        currentConnection.send('actionDispatched', state);
+      } catch (error) {
+        state.action = { type: action.type };
+        state.before = { error };
+        state.after = { error };
+        currentConnection.send('actionDispatched', state);
+      }
     }
 
     return result;
