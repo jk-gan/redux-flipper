@@ -23,7 +23,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "prettier src --write"
   },
   "peerDependencies": {
     "react-native": "^0.62.0",
