@@ -57,3 +57,21 @@ For more information about cyclic reference, visit [MDN Cyclic Object](https://d
 ```javascript
 let reduxDebugger = createDebugger({ resolveCyclic: true });
 ```
+
+### Actions Blacklist
+
+You may specify an actions blacklist the same way as with React Native Debugger, by providing an
+array of strings to match against the action.type field.
+This feature can be enabled by passing `{ actionsBlacklist }` into `createDebugger`,
+where `actionsBlacklist` is an array of strings.
+
+For example:
+
+```javascript
+const actionsBlackList = ['EVENTS/', 'LOCAL/setClock'];
+const reduxDebugger = createDebugger({ actionsBlackList });
+```
+
+This will exclude any actions that contain the substrings in the blacklist. So an action with type
+`EVENTS/foo` will not be sent to the redux debugger flipper plugin, but an action with type
+`LOCAL/anotherAction` will.
