@@ -51,26 +51,28 @@ const createDebugger = ({ resolveCyclic, actionsBlacklist }: Configuration = def
     });
   }
 
-  return (next: any) => (action: { type: string }) => {
+  return (next: any) => (action: { type: string, payload: any }) => {
     let startTime = Date.now();
     let before = store.getState();
     let result = next(action);
     if (currentConnection) {
       let after = store.getState();
       let now = Date.now();
+      let decycledAction = null;
 
       if (resolveCyclic) {
         const cycle = require('cycle');
 
         before = cycle.decycle(before);
         after = cycle.decycle(after);
+        decycledAction = cycle.decycle(action)
       }
 
       let state = {
         id: startTime,
         time: dayjs(startTime).format('HH:mm:ss.SSS'),
         took: `${now - startTime} ms`,
-        action,
+        action: decycledAction || action,
         before,
         after,
       };
