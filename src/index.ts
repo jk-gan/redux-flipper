@@ -3,16 +3,17 @@ import * as dayjs from 'dayjs';
 
 type Configuration = {
   resolveCyclic: boolean;
+  actionsBlacklist: Array<String>;
 };
 
-const defaultConfig: Configuration = { resolveCyclic: false };
+const defaultConfig: Configuration = { resolveCyclic: false, actionsBlacklist: [] };
 
 let currentConnection: any = null;
 const error = {
   NO_STORE: 'NO_STORE',
 };
 
-const createDebugger = ({ resolveCyclic }: Configuration = defaultConfig) => (
+const createDebugger = ({ resolveCyclic, actionsBlacklist }: Configuration = defaultConfig) => (
   store: any,
 ) => {
   if (currentConnection == null) {
@@ -73,7 +74,19 @@ const createDebugger = ({ resolveCyclic }: Configuration = defaultConfig) => (
         before,
         after,
       };
-      currentConnection.send('actionDispatched', state);
+
+      let blackListed = false;
+      if (actionsBlacklist.length) {
+        for (const substr of actionsBlacklist) {
+          if (action.type.includes(substr)) {
+            blackListed = true;
+            break;
+          }
+        }
+      }
+      if (!blackListed) {
+        currentConnection.send('actionDispatched', state);
+      }
     }
 
     return result;
