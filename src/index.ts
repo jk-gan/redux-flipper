@@ -51,7 +51,7 @@ const createDebugger = ({ resolveCyclic, actionsBlacklist }: Configuration = def
     });
   }
 
-  return (next: any) => (action: { type: string, payload: any }) => {
+  return (next: any) => (action: { type: string }) => {
     let startTime = Date.now();
     let before = store.getState();
     let result = next(action);
