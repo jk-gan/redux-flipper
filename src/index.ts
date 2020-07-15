@@ -3,7 +3,7 @@ import * as dayjs from 'dayjs';
 
 type Configuration = {
   resolveCyclic: boolean;
-  actionsBlacklist: Array<String>;
+  actionsBlacklist: Array<string>;
 };
 
 const defaultConfig: Configuration = { resolveCyclic: false, actionsBlacklist: [] };
@@ -44,7 +44,7 @@ const createDebugger = ({ resolveCyclic, actionsBlacklist }: Configuration = def
           },
         );
       },
-      onDisconnect() {},
+      onDisconnect() { },
       runInBackground() {
         return true;
       },
