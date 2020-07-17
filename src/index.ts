@@ -6,16 +6,20 @@ type Configuration = {
   actionsBlacklist: Array<string>;
 };
 
-const defaultConfig: Configuration = { resolveCyclic: false, actionsBlacklist: [] };
+const defaultConfig: Configuration = {
+  resolveCyclic: false,
+  actionsBlacklist: [],
+};
 
 let currentConnection: any = null;
 const error = {
   NO_STORE: 'NO_STORE',
 };
 
-const createDebugger = ({ resolveCyclic, actionsBlacklist }: Configuration = defaultConfig) => (
-  store: any,
-) => {
+const createDebugger = ({
+  resolveCyclic,
+  actionsBlacklist,
+}: Configuration = defaultConfig) => (store: any) => {
   if (currentConnection == null) {
     addPlugin({
       getId() {
@@ -44,7 +48,7 @@ const createDebugger = ({ resolveCyclic, actionsBlacklist }: Configuration = def
           },
         );
       },
-      onDisconnect() { },
+      onDisconnect() {},
       runInBackground() {
         return true;
       },
@@ -76,7 +80,7 @@ const createDebugger = ({ resolveCyclic, actionsBlacklist }: Configuration = def
       };
 
       let blackListed = false;
-      if (actionsBlacklist.length) {
+      if (actionsBlacklist && actionsBlacklist.length) {
         for (const substr of actionsBlacklist) {
           if (action.type.includes(substr)) {
             blackListed = true;
