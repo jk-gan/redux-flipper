@@ -2,9 +2,9 @@ import { addPlugin, Flipper } from 'react-native-flipper';
 import * as dayjs from 'dayjs';
 
 export type Configuration = {
-  resolveCyclic: boolean;
-  actionsBlacklist: Array<string>;
-  stateWhitelist: string[];
+  resolveCyclic?: boolean;
+  actionsBlacklist?: Array<string>;
+  stateWhitelist?: string[];
 };
 
 const defaultConfig: Configuration = {
@@ -20,7 +20,7 @@ const error = {
 };
 
 const createStateForAction = (state: any, config: Configuration) => {
-  return config.stateWhitelist.length
+  return config.stateWhitelist?.length
     ? config.stateWhitelist.reduce(
         (acc, stateWhitelistedKey) => ({
           ...acc,
@@ -88,13 +88,9 @@ const createDebugger = (config = defaultConfig) => (store: any) => {
         after: createStateForAction(after, config),
       };
 
-      let blackListed = false;
-      for (const substr of config.actionsBlacklist) {
-        if (action.type.includes(substr)) {
-          blackListed = true;
-          break;
-        }
-      }
+      const blackListed = !!config.actionsBlacklist?.some(
+        (blacklistedActionType) => action.type.includes(blacklistedActionType),
+      );
       if (!blackListed) {
         currentConnection.send('actionDispatched', state);
       }
