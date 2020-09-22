@@ -10,7 +10,6 @@ export type Configuration = {
 const defaultConfig: Configuration = {
   resolveCyclic: false,
   actionsBlacklist: [],
-  stateWhitelist: [],
 };
 
 let currentConnection: Flipper.FlipperConnection | null = null;
@@ -20,7 +19,7 @@ const error = {
 };
 
 const createStateForAction = (state: any, config: Configuration) => {
-  return config.stateWhitelist?.length
+  return config.stateWhitelist
     ? config.stateWhitelist.reduce(
         (acc, stateWhitelistedKey) => ({
           ...acc,
