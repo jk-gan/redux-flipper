@@ -1,7 +1,7 @@
 import { addPlugin, Flipper } from 'react-native-flipper';
 import * as dayjs from 'dayjs';
 
-type Configuration = {
+export type Configuration = {
   resolveCyclic: boolean;
   actionsBlacklist: Array<string>;
   stateWhitelist: string[];
