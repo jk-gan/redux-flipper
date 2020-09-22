@@ -16,10 +16,7 @@ const error = {
   NO_STORE: 'NO_STORE',
 };
 
-const createDebugger = ({
-  resolveCyclic,
-  actionsBlacklist,
-}: Configuration = defaultConfig) => (store: any) => {
+const createDebugger = (config = defaultConfig) => (store: any) => {
   if (currentConnection == null) {
     addPlugin({
       getId() {
@@ -63,7 +60,7 @@ const createDebugger = ({
       let after = store.getState();
       let now = Date.now();
 
-      if (resolveCyclic) {
+      if (config.resolveCyclic) {
         const cycle = require('cycle');
 
         before = cycle.decycle(before);
@@ -80,12 +77,10 @@ const createDebugger = ({
       };
 
       let blackListed = false;
-      if (actionsBlacklist && actionsBlacklist.length) {
-        for (const substr of actionsBlacklist) {
-          if (action.type.includes(substr)) {
-            blackListed = true;
-            break;
-          }
+      for (const substr of config.actionsBlacklist) {
+        if (action.type.includes(substr)) {
+          blackListed = true;
+          break;
         }
       }
       if (!blackListed) {
