@@ -4,17 +4,31 @@ import * as dayjs from 'dayjs';
 type Configuration = {
   resolveCyclic: boolean;
   actionsBlacklist: Array<string>;
+  stateWhitelist: string[];
 };
 
 const defaultConfig: Configuration = {
   resolveCyclic: false,
   actionsBlacklist: [],
+  stateWhitelist: [],
 };
 
 let currentConnection: Flipper.FlipperConnection | null = null;
 
 const error = {
   NO_STORE: 'NO_STORE',
+};
+
+const createStateForAction = (state: any, config: Configuration) => {
+  return config.stateWhitelist.length
+    ? config.stateWhitelist.reduce(
+        (acc, stateWhitelistedKey) => ({
+          ...acc,
+          [stateWhitelistedKey]: state[stateWhitelistedKey],
+        }),
+        {},
+      )
+    : state;
 };
 
 const createDebugger = (config = defaultConfig) => (store: any) => {
@@ -70,8 +84,8 @@ const createDebugger = (config = defaultConfig) => (store: any) => {
         time: dayjs(startTime).format('HH:mm:ss.SSS'),
         took: `${now - startTime} ms`,
         action,
-        before,
-        after,
+        before: createStateForAction(before, config),
+        after: createStateForAction(after, config),
       };
 
       let blackListed = false;
