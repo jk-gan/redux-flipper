@@ -1,4 +1,4 @@
-import { addPlugin } from 'react-native-flipper';
+import { addPlugin, Flipper } from 'react-native-flipper';
 import * as dayjs from 'dayjs';
 
 type Configuration = {
@@ -11,7 +11,8 @@ const defaultConfig: Configuration = {
   actionsBlacklist: [],
 };
 
-let currentConnection: any = null;
+let currentConnection: Flipper.FlipperConnection | null = null;
+
 const error = {
   NO_STORE: 'NO_STORE',
 };
@@ -22,28 +23,25 @@ const createDebugger = (config = defaultConfig) => (store: any) => {
       getId() {
         return 'flipper-plugin-redux-debugger';
       },
-      onConnect(connection: any) {
+      onConnect(connection) {
         currentConnection = connection;
 
-        currentConnection.receive(
-          'dispatchAction',
-          (data: any, responder: any) => {
-            console.log('flipper redux dispatch action data', data);
-            // respond with some data
-            if (store) {
-              store.dispatch({ type: data.type, ...data.payload });
+        currentConnection.receive('dispatchAction', (data, responder) => {
+          console.log('flipper redux dispatch action data', data);
+          // respond with some data
+          if (store) {
+            store.dispatch({ type: data.type, ...data.payload });
 
-              responder.success({
-                ack: true,
-              });
-            } else {
-              responder.success({
-                error: error.NO_STORE,
-                message: 'store is not setup in flipper plugin',
-              });
-            }
-          },
-        );
+            responder.success({
+              ack: true,
+            });
+          } else {
+            responder.success({
+              error: error.NO_STORE,
+              message: 'store is not setup in flipper plugin',
+            });
+          }
+        });
       },
       onDisconnect() {},
       runInBackground() {
