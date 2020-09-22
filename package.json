@@ -23,7 +23,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "dev": "tsc -w"
   },
   "peerDependencies": {
     "react-native": "^0.62.0",
