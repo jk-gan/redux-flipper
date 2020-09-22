@@ -26,7 +26,9 @@ cd ios && pod install
 ```javascript
 import { createStore, applyMiddleware } from 'redux';
 
-const middlewares = [/* other middlewares */];
+const middlewares = [
+  /* other middlewares */
+];
 
 if (__DEV__) {
   const createDebugger = require('redux-flipper').default;
@@ -45,6 +47,26 @@ Manage Plugins > Install Plugins > search "redux-debugger" > Install
 4. Start your app, then you should be able to see Redux Debugger on your Flipper app
 
 ## Optional Configuration
+
+### State whitelisting
+
+Many times you are only interested in certain part of the Redux state when debugging. You can pass array of string which have to match to the root key of the Redux state.
+
+For example if Redux schema is something like this and you are only interested in user then you can whitelist only that part of the state
+
+```typescript
+type ReduxState = {
+  todos: string[];
+  notifications: string[];
+  user: {
+    name: string;
+  };
+};
+```
+
+```javascript
+let reduxDebugger = createDebugger({ stateWhitelist: ['user'] });
+```
 
 ### Resolve cyclic reference
 
