@@ -68,6 +68,8 @@ type ReduxState = {
 let reduxDebugger = createDebugger({ stateWhitelist: ['user'] });
 ```
 
+If you app has very big state tree it is also good idea to whitelist certain keys from Redux state otherwise Flipper can be very slow.
+
 ### Resolve cyclic reference
 
 Redux Debugger does not support cyclic reference objects by default as resolving it makes application slow. This feature can be enabled by passing `{ resolveCyclic: true }` into `createDebugger`.
