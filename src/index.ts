@@ -1,9 +1,10 @@
-import { addPlugin } from 'react-native-flipper';
+import { addPlugin, Flipper } from 'react-native-flipper';
 import * as dayjs from 'dayjs';
 
-type Configuration = {
-  resolveCyclic: boolean;
-  actionsBlacklist: Array<string>;
+export type Configuration = {
+  resolveCyclic?: boolean;
+  actionsBlacklist?: Array<string>;
+  stateWhitelist?: string[];
 };
 
 const defaultConfig: Configuration = {
@@ -11,42 +12,49 @@ const defaultConfig: Configuration = {
   actionsBlacklist: [],
 };
 
-let currentConnection: any = null;
+let currentConnection: Flipper.FlipperConnection | null = null;
+
 const error = {
   NO_STORE: 'NO_STORE',
 };
 
-const createDebugger = ({
-  resolveCyclic,
-  actionsBlacklist,
-}: Configuration = defaultConfig) => (store: any) => {
+const createStateForAction = (state: any, config: Configuration) => {
+  return config.stateWhitelist
+    ? config.stateWhitelist.reduce(
+        (acc, stateWhitelistedKey) => ({
+          ...acc,
+          [stateWhitelistedKey]: state[stateWhitelistedKey],
+        }),
+        {},
+      )
+    : state;
+};
+
+const createDebugger = (config = defaultConfig) => (store: any) => {
   if (currentConnection == null) {
     addPlugin({
       getId() {
         return 'flipper-plugin-redux-debugger';
       },
-      onConnect(connection: any) {
+      onConnect(connection) {
         currentConnection = connection;
 
-        currentConnection.receive(
-          'dispatchAction',
-          (data: any, responder: any) => {
-            console.log('flipper redux dispatch action data', data);
-            // respond with some data
-            if (store) {
-              store.dispatch({ type: data.type, ...data.payload });
+        currentConnection.receive('dispatchAction', (data, responder) => {
+          console.log('flipper redux dispatch action data', data);
+          // respond with some data
+          if (store) {
+            store.dispatch({ type: data.type, ...data.payload });
 
-              responder.success({
-                ack: true,
-              });
-            } else {
-              responder.success({
-                error: error.NO_STORE,
-                message: 'store is not setup in flipper plugin',
-              });
-            }
-          },
-        );
+            responder.success({
+              ack: true,
+            });
+          } else {
+            responder.success({
+              error: error.NO_STORE,
+              message: 'store is not setup in flipper plugin',
+            });
+          }
+        });
       },
       onDisconnect() {},
       runInBackground() {
@@ -63,7 +71,7 @@ const createDebugger = ({
       let after = store.getState();
       let now = Date.now();
 
-      if (resolveCyclic) {
+      if (config.resolveCyclic) {
         const cycle = require('cycle');
 
         before = cycle.decycle(before);
@@ -75,19 +83,13 @@ const createDebugger = ({
         time: dayjs(startTime).format('HH:mm:ss.SSS'),
         took: `${now - startTime} ms`,
         action,
-        before,
-        after,
+        before: createStateForAction(before, config),
+        after: createStateForAction(after, config),
       };
 
-      let blackListed = false;
-      if (actionsBlacklist && actionsBlacklist.length) {
-        for (const substr of actionsBlacklist) {
-          if (action.type.includes(substr)) {
-            blackListed = true;
-            break;
-          }
-        }
-      }
+      const blackListed = !!config.actionsBlacklist?.some(
+        (blacklistedActionType) => action.type.includes(blacklistedActionType),
+      );
       if (!blackListed) {
         currentConnection.send('actionDispatched', state);
       }
