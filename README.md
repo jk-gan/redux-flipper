@@ -92,8 +92,8 @@ where `actionsBlacklist` is an array of strings.
 For example:
 
 ```javascript
-const actionsBlackList = ['EVENTS/', 'LOCAL/setClock'];
-const reduxDebugger = createDebugger({ actionsBlackList });
+const actionsBlacklist = ['EVENTS/', 'LOCAL/setClock'];
+const reduxDebugger = createDebugger({ actionsBlacklist });
 ```
 
 This will exclude any actions that contain the substrings in the blacklist. So an action with type
