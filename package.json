@@ -27,11 +27,12 @@
     "dev": "tsc -w"
   },
   "peerDependencies": {
-    "react-native": "^0.62.0",
-    "react-native-flipper": "^0.55.0",
+    "react-native": "^0.63.0",
+    "react-native-flipper": "^0.63.0",
     "redux": "^4"
   },
   "devDependencies": {
+    "@types/node": "^14.14.3",
     "@typescript-eslint/eslint-plugin": "^2.28.0",
     "@typescript-eslint/parser": "^2.28.0",
     "eslint": "^6.8.0",
@@ -39,13 +40,10 @@
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-import": "^2.20.2",
     "prettier": "^2.0.4",
-    "redux": "^4.0.5",
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@types/node": "^14.0.22",
     "cycle": "^1.0.3",
-    "dayjs": "^1.8.29",
-    "react-native-flipper": "^0.55.0"
+    "dayjs": "^1.8.29"
   }
 }
