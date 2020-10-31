@@ -70,19 +70,21 @@ const createDebugger = (config = defaultConfig) => (store: any) => {
     if (currentConnection) {
       let after = store.getState();
       let now = Date.now();
+      let decycledAction = null;
 
       if (config.resolveCyclic) {
         const cycle = require('cycle');
 
         before = cycle.decycle(before);
         after = cycle.decycle(after);
+        decycledAction = cycle.decycle(action)
       }
 
       let state = {
         id: startTime,
         time: dayjs(startTime).format('HH:mm:ss.SSS'),
         took: `${now - startTime} ms`,
-        action,
+        action: decycledAction || action,
         before: createStateForAction(before, config),
         after: createStateForAction(after, config),
       };
