@@ -1,10 +1,10 @@
 {
   "name": "redux-flipper",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "Redux middleware for flipper",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "author": "Gan Jun Kai <kuhn96@gmail.com> (https://github.com/jk-gan)",
+  "author": "jk-gan <junkai@hey.com> (https://github.com/jk-gan)",
   "contributors": [
     {
       "name": "Wai Pai Lee",
