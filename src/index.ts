@@ -30,6 +30,29 @@ const createStateForAction = (state: any, config: Configuration) => {
     : state;
 };
 
+// To initiate initial state tree
+const createInitialAction = (store: any, config: Configuration) => {
+  const startTime = Date.now();
+  let initState = store.getState();
+
+  if (config.resolveCyclic) {
+    const cycle = require('cycle');
+
+    initState = cycle.decycle(initState);
+  }
+
+  let state = {
+    id: startTime,
+    time: dayjs(startTime).format('HH:mm:ss.SSS'),
+    took: `-`,
+    action: { type: '@@INIT' },
+    before: createStateForAction({}, config),
+    after: createStateForAction(initState, config),
+  };
+
+  currentConnection.send('actionInit', state);
+};
+
 const createDebugger = (config = defaultConfig) => (store: any) => {
   if (currentConnection == null) {
     addPlugin({
@@ -59,32 +82,17 @@ const createDebugger = (config = defaultConfig) => (store: any) => {
           },
         );
 
-        // To initiate initial state tree
-        const startTime = Date.now();
-        let initState = store.getState();
-
-        if (config.resolveCyclic) {
-          const cycle = require('cycle');
-
-          initState = cycle.decycle(initState);
-        }
-
-        let state = {
-          id: startTime,
-          time: dayjs(startTime).format('HH:mm:ss.SSS'),
-          took: `-`,
-          action: { type: '@@INIT' },
-          before: createStateForAction({}, config),
-          after: createStateForAction(initState, config),
-        };
-
-        currentConnection.send('actionInit', state);
+        createInitialAction(store, config);
       },
-      onDisconnect() {},
+      onDisconnect() {
+        currentConnection = null;
+      },
       runInBackground() {
         return true;
       },
     });
+  } else {
+    createInitialAction(store, config);
   }
 
   return (next: any) => (action: { type: string }) => {
