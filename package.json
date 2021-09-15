@@ -27,8 +27,8 @@
     "dev": "tsc -w"
   },
   "peerDependencies": {
-    "react-native": "^0.63.0",
-    "react-native-flipper": "^0.100.0",
+    "react-native": ">=0.63.0",
+    "react-native-flipper": ">=0.100.0",
     "redux": "^4"
   },
   "devDependencies": {
