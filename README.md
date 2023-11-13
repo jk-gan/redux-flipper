@@ -38,6 +38,24 @@ if (__DEV__) {
 const store = createStore(RootReducer, applyMiddleware(...middlewares));
 ```
 
+Redux Toolkit
+
+```javascript
+const middlewares = [
+  /* other middlewares */
+];
+
+if (__DEV__) {
+  const createDebugger = require('redux-flipper').default;
+  middlewares.push(createDebugger());
+}
+
+const store = configureStore({
+  reducer: {},
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(middleware),
+});
+```
+
 3. Install [flipper-plugin-redux-debugger](https://github.com/jk-gan/flipper-plugin-redux-debugger) in Flipper desktop client:
 
 ```
